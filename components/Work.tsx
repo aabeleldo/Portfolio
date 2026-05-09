@@ -36,7 +36,7 @@ const PROJECTS = [
       "Online ordering CTA linked to Toast's platform",
       "Advised client on Toast Online Ordering setup and costs during meeting",
     ],
-    link: "https://ambrose-pizza.vercel.app/",
+    link: "https://ambrosepizza.ca",
     live: true,
   },
   {

@@ -11,6 +11,31 @@ const scramble = (target: string, progress: number) =>
     return CHARS[Math.floor(Math.random() * CHARS.length)];
   }).join("");
 
+const IconGitHub = () => (
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/>
+  </svg>
+);
+
+const IconInstagram = () => (
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/>
+  </svg>
+);
+
+const IconEmail = () => (
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="2" y="4" width="20" height="16" rx="2"/>
+    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+  </svg>
+);
+
+const SOCIALS = [
+  { label: "GitHub",    href: "https://github.com/aabeleldo",        Icon: IconGitHub    },
+  { label: "Instagram", href: "https://www.instagram.com/aabel.js", Icon: IconInstagram },
+  { label: "Gmail",     href: "mailto:eldoaabel@gmail.com",           Icon: IconEmail     },
+];
+
 export default function Main() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const cursorRing = useRef<HTMLDivElement>(null);
@@ -229,6 +254,79 @@ export default function Main() {
         willChange: "top, left",
       }} />
 
+      {/* Mobile-only fixed social strip */}
+      <div style={{
+        position: "fixed",
+        right: 0,
+        top: "50%",
+        transform: "translateY(-50%)",
+        zIndex: 9999,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 0,
+      }}>
+        <style>{`
+          @media (min-width: 769px) { .mobile-social-strip { display: none !important; } }
+
+          .mobile-social-strip {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+          }
+
+          .mobile-social-strip::before,
+          .mobile-social-strip::after {
+            content: '';
+            display: block;
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, transparent, rgba(100,160,255,0.2));
+          }
+          .mobile-social-strip::after {
+            background: linear-gradient(to top, transparent, rgba(100,160,255,0.2));
+          }
+
+          .mobile-social-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            color: rgba(100,150,255,0.35);
+            text-decoration: none;
+            transition: color .2s, background .2s;
+            position: relative;
+          }
+          .mobile-social-icon:active {
+            color: rgba(160,210,255,0.9);
+            background: rgba(100,160,255,0.08);
+          }
+
+          .mobile-social-divider {
+            width: 1px;
+            height: 1px;
+            background: rgba(100,160,255,0.15);
+            margin: 2px 0;
+          }
+        `}</style>
+        <div className="mobile-social-strip">
+          {SOCIALS.map(({ label, href, Icon }, i) => (
+            
+              <a key={label}
+              href={href}
+              target={href.startsWith("mailto") ? undefined : "_blank"}
+              rel="noreferrer"
+              className="mobile-social-icon"
+              aria-label={label}
+              onClick={() => posthog.capture("social_link_clicked", { platform: label, location: "hero_mobile_strip" })}
+            >
+              <Icon />
+            </a>
+          ))}
+        </div>
+      </div>
+
       <section style={{
         position: "relative",
         width: "100vw",
@@ -249,7 +347,7 @@ export default function Main() {
               transparent,
               transparent 2px,
               rgba(0,0,0,0.07) 2px,
-              rgba(0,0,0,0.07) 4px
+              rgba(0,0,0,0.07)4px
             );
             pointer-events: none;
           }
@@ -311,8 +409,34 @@ export default function Main() {
             color: #fff;
           }
 
+          .hero-social-link {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            color: rgba(100,150,255,0.35);
+            text-decoration: none;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 10px;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            transition: color .2s;
+            white-space: nowrap;
+          }
+          .hero-social-link:hover {
+            color: rgba(160,210,255,0.8);
+          }
+          .hero-social-link svg {
+            flex-shrink: 0;
+            transition: transform .2s;
+          }
+          .hero-social-link:hover svg {
+            transform: translateY(-1px);
+          }
+
           @media (max-width: 768px) {
-            .hero-status-bar span:nth-child(2) { display: none; }
+            .hero-status-left { display: none; }
+            .hero-status-center { display: none; }
+            .hero-status-socials { display: none; }
           }
         `}</style>
 
@@ -380,27 +504,47 @@ export default function Main() {
             </p>
             <div className="sub3">
               <button
-              className="crt-btn"
-              onClick={() => { posthog.capture("cta_clicked", { label: "view_work" }); document.getElementById("work")?.scrollIntoView({ behavior: "smooth" }); }}
-            >
-              &gt; ./view_work.sh
-            </button>
+                className="crt-btn"
+                onClick={() => {
+                  posthog.capture("cta_clicked", { label: "view_work" });
+                  document.getElementById("work")?.scrollIntoView({ behavior: "smooth" });
+                }}
+              >
+                &gt; ./view_work.sh
+              </button>
             </div>
           </div>
         </div>
 
-        <div className="hero-status-bar" style={{
+        {/* Desktop status bar */}
+        <div style={{
           position: "absolute", bottom: 0, left: 0, right: 0,
           borderTop: "1px solid rgba(100,160,255,0.1)",
           padding: "10px 8vw",
-          display: "flex", justifyContent: "space-between",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
           fontFamily: "'Share Tech Mono', monospace",
           fontSize: 10, color: "rgba(100,150,255,0.3)",
           letterSpacing: ".12em", zIndex: 6,
         }}>
-          <span>STATUS: ONLINE</span>
-          <span>AABEL ELDO — FULL STACK ENGINEER</span>
-          <span>BUILD 2026.04</span>
+          <span className="hero-status-left">STATUS: ONLINE</span>
+          <span className="hero-status-center">AABEL ELDO — FULL STACK ENGINEER</span>
+          <div className="hero-status-socials" style={{ display: "flex", alignItems: "center", gap: 20 }}>
+            {SOCIALS.map(({ label, href, Icon }) => (
+              
+                <a key={label}
+                href={href}
+                target={href.startsWith("mailto") ? undefined : "_blank"}
+                rel="noreferrer"
+                className="hero-social-link"
+                onClick={() => posthog.capture("social_link_clicked", { platform: label, location: "hero" })}
+              >
+                <Icon />
+                <span>{label}</span>
+              </a>
+            ))}
+          </div>
         </div>
       </section>
     </>
