@@ -254,79 +254,6 @@ export default function Main() {
         willChange: "top, left",
       }} />
 
-      {/* Mobile-only fixed social strip */}
-      <div style={{
-        position: "fixed",
-        right: 0,
-        top: "50%",
-        transform: "translateY(-50%)",
-        zIndex: 9999,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 0,
-      }}>
-        <style>{`
-          @media (min-width: 769px) { .mobile-social-strip { display: none !important; } }
-
-          .mobile-social-strip {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-          }
-
-          .mobile-social-strip::before,
-          .mobile-social-strip::after {
-            content: '';
-            display: block;
-            width: 1px;
-            height: 40px;
-            background: linear-gradient(to bottom, transparent, rgba(100,160,255,0.2));
-          }
-          .mobile-social-strip::after {
-            background: linear-gradient(to top, transparent, rgba(100,160,255,0.2));
-          }
-
-          .mobile-social-icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 36px;
-            height: 36px;
-            color: rgba(100,150,255,0.35);
-            text-decoration: none;
-            transition: color .2s, background .2s;
-            position: relative;
-          }
-          .mobile-social-icon:active {
-            color: rgba(160,210,255,0.9);
-            background: rgba(100,160,255,0.08);
-          }
-
-          .mobile-social-divider {
-            width: 1px;
-            height: 1px;
-            background: rgba(100,160,255,0.15);
-            margin: 2px 0;
-          }
-        `}</style>
-        <div className="mobile-social-strip">
-          {SOCIALS.map(({ label, href, Icon }, i) => (
-            
-              <a key={label}
-              href={href}
-              target={href.startsWith("mailto") ? undefined : "_blank"}
-              rel="noreferrer"
-              className="mobile-social-icon"
-              aria-label={label}
-              onClick={() => posthog.capture("social_link_clicked", { platform: label, location: "hero_mobile_strip" })}
-            >
-              <Icon />
-            </a>
-          ))}
-        </div>
-      </div>
-
       <section style={{
         position: "relative",
         width: "100vw",
@@ -347,7 +274,7 @@ export default function Main() {
               transparent,
               transparent 2px,
               rgba(0,0,0,0.07) 2px,
-              rgba(0,0,0,0.07)4px
+              rgba(0,0,0,0.07) 4px
             );
             pointer-events: none;
           }
@@ -393,6 +320,7 @@ export default function Main() {
           .sub1 { animation: fadeUp .5s ease both .05s; }
           .sub2 { animation: fadeUp .5s ease both .2s;  }
           .sub3 { animation: fadeUp .5s ease both .35s; }
+          .sub4 { animation: fadeUp .5s ease both .45s; }
 
           .crt-btn {
             border: 1px solid rgba(100,180,255,0.45);
@@ -412,11 +340,11 @@ export default function Main() {
           .hero-social-link {
             display: flex;
             align-items: center;
-            gap: 7px;
-            color: rgba(100,150,255,0.35);
+            gap: 8px;
+            color: rgba(100,150,255,0.45);
             text-decoration: none;
             font-family: 'Share Tech Mono', monospace;
-            font-size: 10px;
+            font-size: 11px;
             letter-spacing: .12em;
             text-transform: uppercase;
             transition: color .2s;
@@ -428,15 +356,45 @@ export default function Main() {
           .hero-social-link svg {
             flex-shrink: 0;
             transition: transform .2s;
+            width: 16px;
+            height: 16px;
           }
           .hero-social-link:hover svg {
             transform: translateY(-1px);
           }
 
+          /* Desktop status bar — hidden on mobile */
           @media (max-width: 768px) {
-            .hero-status-left { display: none; }
-            .hero-status-center { display: none; }
-            .hero-status-socials { display: none; }
+            .hero-status-bar { display: none !important; }
+          }
+
+          /* Mobile social row — shown only on mobile, inline below the CTA */
+          .mobile-socials {
+            display: none;
+          }
+          @media (max-width: 768px) {
+            .mobile-socials {
+              display: flex;
+              align-items: center;
+              gap: 20px;
+              margin-top: 28px;
+            }
+          }
+
+          .mobile-social-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(100,150,255,0.45);
+            text-decoration: none;
+            transition: color .2s;
+          }
+          .mobile-social-icon svg {
+            width: 20px;
+            height: 20px;
+          }
+          .mobile-social-icon:active {
+            color: rgba(160,210,255,0.9);
           }
         `}</style>
 
@@ -500,7 +458,7 @@ export default function Main() {
               fontSize: 12, color: "rgba(100,150,255,0.35)",
               letterSpacing: ".1em", margin: "0 0 40px", lineHeight: 1.7,
             }}>
-              &gt; NO TEMPLATES. NO BLOAT. JUST CLEAN BUILDS.
+              &gt; CLEAN FRONTEND & BACKEND DEVELOPMENT — END TO END.
             </p>
             <div className="sub3">
               <button
@@ -513,24 +471,41 @@ export default function Main() {
                 &gt; ./view_work.sh
               </button>
             </div>
+
+            {/* Mobile social icons — inline below CTA */}
+            <div className="mobile-socials sub4">
+              {SOCIALS.map(({ label, href, Icon }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target={href.startsWith("mailto") ? undefined : "_blank"}
+                  rel="noreferrer"
+                  className="mobile-social-icon"
+                  aria-label={label}
+                  onClick={() => posthog.capture("social_link_clicked", { platform: label, location: "hero_mobile" })}
+                >
+                  <Icon />
+                </a>
+              ))}
+            </div>
           </div>
         </div>
 
         {/* Desktop status bar */}
-        <div style={{
+        <div className="hero-status-bar" style={{
           position: "absolute", bottom: 0, left: 0, right: 0,
           borderTop: "1px solid rgba(100,160,255,0.1)",
-          padding: "10px 8vw",
+          padding: "14px 8vw",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
           fontFamily: "'Share Tech Mono', monospace",
-          fontSize: 10, color: "rgba(100,150,255,0.3)",
+          fontSize: 11, color: "rgba(100,150,255,0.35)",
           letterSpacing: ".12em", zIndex: 6,
         }}>
-          <span className="hero-status-left">STATUS: ONLINE</span>
-          <span className="hero-status-center">AABEL ELDO — FULL STACK ENGINEER</span>
-          <div className="hero-status-socials" style={{ display: "flex", alignItems: "center", gap: 20 }}>
+          <span>STATUS: ONLINE</span>
+          <span>AABEL ELDO — FULL STACK ENGINEER</span>
+          <div style={{ display: "flex", alignItems: "center", gap: 28 }}>
             {SOCIALS.map(({ label, href, Icon }) => (
               
                 <a key={label}

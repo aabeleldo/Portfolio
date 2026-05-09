@@ -138,7 +138,7 @@ export default function Engineering() {
           color:rgba(140,180,255,0.6);
         }
 
-        .grid3 {
+        .grid2 {
           display:grid;
           grid-template-columns: 1fr 1fr;
           gap:12px;
@@ -153,16 +153,6 @@ export default function Engineering() {
         }
 
         .box img { width:100%; display:block; }
-
-        .eq {
-          font-family:'Share Tech Mono';
-          font-size:12px;
-          color:rgba(170,200,255,0.75);
-          margin-top:18px;
-          padding:14px;
-          border-left:2px solid rgba(120,160,255,0.3);
-          background:rgba(10,14,25,0.4);
-        }
 
         .row {
           border-bottom:1px solid rgba(120,160,255,0.08);
@@ -182,6 +172,15 @@ export default function Engineering() {
           color:rgba(120,220,160,0.6);
           margin:6px 0;
         }
+
+        .photo-caption {
+          margin-top: 8px;
+          font-family: 'Share Tech Mono';
+          font-size: 10px;
+          color: rgba(120,160,255,0.4);
+          letter-spacing: .12em;
+          text-transform: uppercase;
+        }
       `}</style>
 
       <div className={`wrap ${visible ? "visible" : ""}`}>
@@ -190,14 +189,12 @@ export default function Engineering() {
         <div className="fade">
           <div className="label">&gt; ENGINEERING_WORK</div>
           <div className="h1">Engineering_</div>
-
           <div className="text">
             Robotics, embedded systems, CAD, and probabilistic localization built for
             competitive autonomous systems.
           </div>
-
           <div className="chips">
-            {["C++", "Robotics", "VEX", "Monte Carlo Localization"].map(t => (
+            {["C++", "Robotics", "VEX", "Monte Carlo Localization", "VEX Worlds"].map(t => (
               <div key={t} className="chip">{t}</div>
             ))}
           </div>
@@ -207,73 +204,68 @@ export default function Engineering() {
         <div className="fade" style={{ marginTop: 60 }}>
           <div className="label">&gt; FEATURED_PROJECT</div>
           <div className="h2">Monte Carlo Localization</div>
-
           <div className="text">
             Particle filter localization combining odometry (tracking wheels + IMU)
             with distance sensor corrections to reduce cumulative drift in autonomous navigation.
           </div>
         </div>
 
-          {/* EQUATION (separate, text-style) */}
-            <div style={{ marginTop: 18 }}>
-            <img
-                src="/formula.png"
-                alt="Particle filter Bayesian update equation"
-                style={{
-                width: "100%",
-                maxWidth: 520,
-                display: "block",
-                opacity: 0.9,
-                borderLeft: "2px solid rgba(120,160,255,0.3)",
-                paddingLeft: 12,
-                background: "rgba(10,14,25,0.4)",
-                }}
-            />
-            </div>
-
-        {/* VISUALS */}
-        <div className="grid3" style={{ alignItems: "stretch" }}>
-
-        <div className="box" style={{ padding: 0, overflow: "hidden", height: 280, display: "flex", flexDirection: "column" }}>
-            <video
-            src="/robot.mp4"
-            autoPlay
-            loop
-            muted
-            playsInline
-            style={{ flex: 1, width: "100%", objectFit: "contain", display: "block", minHeight: 0 }}
-            />
-            <div style={{ padding: "8px 12px", fontFamily: "Share Tech Mono", fontSize: 10, color: "rgba(120,160,255,0.4)", letterSpacing: ".12em", textTransform: "uppercase" }}>
-            Robot execution
-            </div>
+        {/* EQUATION (unchanged) */}
+        <div style={{ marginTop: 18 }}>
+          <img
+            src="/formula.png"
+            alt="Particle filter Bayesian update equation"
+            style={{
+              width: "100%",
+              maxWidth: 520,
+              display: "block",
+              opacity: 0.9,
+              borderLeft: "2px solid rgba(120,160,255,0.3)",
+              paddingLeft: 12,
+              background: "rgba(10,14,25,0.4)",
+            }}
+          />
         </div>
 
-        <div className="box" style={{ padding: 0, overflow: "hidden", height: 280, display: "flex", flexDirection: "column" }}>
+        {/* VISUALS */}
+        <div className="grid2" style={{ alignItems: "stretch" }}>
+          <div className="box" style={{ padding: 0, overflow: "hidden", height: 280, display: "flex", flexDirection: "column" }}>
+            <video
+              src="/robot.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              style={{ flex: 1, width: "100%", objectFit: "contain", display: "block", minHeight: 0 }}
+            />
+            <div style={{ padding: "8px 12px", fontFamily: "Share Tech Mono", fontSize: 10, color: "rgba(120,160,255,0.4)", letterSpacing: ".12em", textTransform: "uppercase" }}>
+              Robot execution
+            </div>
+          </div>
+
+          <div className="box" style={{ padding: 0, overflow: "hidden", height: 280, display: "flex", flexDirection: "column" }}>
             <div style={{ flex: 1, overflow: "hidden", minHeight: 0 }}>
-            <img
+              <img
                 src="/diagram.png"
                 alt="system diagram"
                 style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
-            />
+              />
             </div>
             <div style={{ padding: "8px 12px", fontFamily: "Share Tech Mono", fontSize: 10, color: "rgba(120,160,255,0.4)", letterSpacing: ".12em", textTransform: "uppercase" }}>
-            Particle filter diagram
+              Particle filter diagram
             </div>
-        </div>
-
+          </div>
         </div>
 
         {/* ARCH */}
         <div style={{ marginTop: 60 }}>
           <div className="label">&gt; SYSTEM_ARCHITECTURE</div>
           <div className="h2">Architecture</div>
-
           {ARCH_COMPONENTS.map((a, i) => (
             <div key={a.label} className="row" onClick={() => { const isOpening = expanded !== i; setExpanded(isOpening ? i : null); if (isOpening) posthog.capture("architecture_row_expanded", { component: a.label }); }}>
               <div style={{ fontFamily: "Share Tech Mono", color: "rgba(160,200,255,0.7)" }}>
                 {a.label}
               </div>
-
               {expanded === i && (
                 <div className="text" style={{ marginTop: 6 }}>
                   {a.detail}
@@ -287,11 +279,9 @@ export default function Engineering() {
         <div style={{ marginTop: 60 }}>
           <div className="label">&gt; CORE_IMPLEMENTATION</div>
           <div className="h2">Code</div>
-
           <div className="box">
             <pre>{SNIPPETS[activeSnippet].code}</pre>
           </div>
-
           <div className="chips" style={{ marginTop: 10 }}>
             {SNIPPETS.map((s, i) => (
               <div
@@ -310,10 +300,70 @@ export default function Engineering() {
         <div style={{ marginTop: 60 }}>
           <div className="label">&gt; RESULTS</div>
           <div className="h2">Outcomes</div>
-
           {OUTCOMES.map(o => (
             <div key={o} className="outcome">✓ {o}</div>
           ))}
+        </div>
+
+        {/* VEX WORLDS */}
+        <div className="fade" style={{ marginTop: 80 }}>
+          <div className="label">&gt; COMMUNITY</div>
+          <div className="h2">VEX Worlds</div>
+          <div className="text" style={{ marginBottom: 24 }}>
+            Part of a school robotics program whose team qualified for and attended the
+            VEX World Championship — the largest robotics competition in the world.
+            Attended Worlds alongside the team, taking in the scale of international
+            competition firsthand.
+          </div>
+
+          {/* 3-photo grid: team.jpg full width on top, canada.jpg and worldteam.jpg side by side below */}
+          <img
+            src="/team.jpg"
+            alt="Robotics team at the University of Waterloo Engineering building"
+            style={{
+              width: "100%",
+              maxHeight: 380,
+              objectFit: "cover",
+              display: "block",
+              borderRadius: 6,
+              border: "1px solid rgba(120,160,255,0.15)",
+            }}
+          />
+          <div className="photo-caption">University of Waterloo — Regional Tournament</div>
+
+          <div className="grid2" style={{ marginTop: 12 }}>
+            <div>
+              <img
+                src="/canada.jpg"
+                alt="Canadian teams on stage at VEX Worlds parade of nations"
+                style={{
+                  width: "100%",
+                  height: 220,
+                  objectFit: "cover",
+                  display: "block",
+                  borderRadius: 6,
+                  border: "1px solid rgba(120,160,255,0.15)",
+                }}
+              />
+              <div className="photo-caption">Parade of Nations — Team Canada, VEX Worlds</div>
+            </div>
+
+            <div>
+              <img
+                src="/worldteam.jpg"
+                alt="Full school robotics team at VEX Worlds"
+                style={{
+                  width: "100%",
+                  height: 220,
+                  objectFit: "cover",
+                  display: "block",
+                  borderRadius: 6,
+                  border: "1px solid rgba(120,160,255,0.15)",
+                }}
+              />
+              <div className="photo-caption">Full team — VEX World Championship</div>
+            </div>
+          </div>
         </div>
 
       </div>
