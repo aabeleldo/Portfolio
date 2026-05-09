@@ -7,25 +7,25 @@ const SERVICES = [
   {
     number: "01",
     title: "Landing Pages & Business Sites",
-    description: "Most local businesses are invisible online or stuck with a generic template that doesn't convert. I build clean, fast, custom sites that actually represent what you do — and get people to call.",
+    description: "Most local businesses are invisible online or stuck with a generic template that doesn't convert. I build clean, fast, custom sites that actually represent what you do, and get people to call.",
     details: ["Custom UI/UX Design", "Wireframing & Prototyping", "Design Systems", "Brand Identity"],
   },
   {
     number: "02",
     title: "Full Stack Development",
-    description: "Got an idea that needs more than a landing page? I build full web apps with Next.js and React — from database to deployment. No hand-holding required on your end.",
+    description: "Got an idea that needs more than a landing page? I build full web apps with Next.js and React, from database to deployment. No hand-holding required on your end.",
     details: ["React / Next.js", "Node.js / Express", "Database Design", "API Integration"],
   },
   {
     number: "03",
     title: "Online Ordering & Payments",
-    description: "I've set up Stripe payment systems and Toast POS integrations for local businesses that need to take orders and payments online — not just a contact form. Restaurants, retail, whatever you're selling.",
+    description: "I've set up Stripe payment systems and Toast POS integrations for local businesses that need to take orders and payments online, not just a contact form. Restaurants, retail, whatever you're selling.",
     details: ["Stripe Integration", "Toast POS Setup", "Online Ordering", "Payment Flows"],
   },
   {
     number: "04",
     title: "Maintenance & Updates",
-    description: "Sites break, go stale, and slow down. I offer monthly retainers to keep yours fast, updated, and working — so you're not scrambling when something breaks.",
+    description: "Sites break, go stale, and slow down. I offer monthly retainers to keep yours fast, updated, and working so you're not scrambling when something breaks.",
     details: ["Performance Monitoring", "Content Updates", "Security Patches", "Monthly Reporting"],
   },
 ];
