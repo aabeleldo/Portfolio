@@ -475,7 +475,6 @@ export default function Contact() {
           color: "rgba(100,160,255,0.25)",
           textTransform: "uppercase",
         }}>
-          Built with Next.js
         </span>
       </div>
     </section>
