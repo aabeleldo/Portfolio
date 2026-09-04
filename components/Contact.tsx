@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import emailjs from "@emailjs/browser";
 import posthog from "posthog-js";
 
-// SVG Icons
 const IconEmail = () => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <rect x="2" y="4" width="20" height="16" rx="2"/>
@@ -31,27 +30,24 @@ const IconInstagram = () => (
 );
 
 export default function Contact() {
-  const sectionRef = useRef<HTMLElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
-  const [visible, setVisible] = useState(false);
   const [form, setForm] = useState({ name: "", email: "", budget: "", message: "" });
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState(false);
+  const [viewed, setViewed] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const obs = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) {
-          setVisible(true);
-          posthog.capture("contact_section_viewed");
-        }
-      },
-      { threshold: 0.1 }
-    );
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting && !viewed) {
+        setViewed(true);
+        posthog.capture("contact_section_viewed");
+      }
+    }, { threshold: 0.1 });
     if (sectionRef.current) obs.observe(sectionRef.current);
     return () => obs.disconnect();
-  }, []);
+  }, [viewed]);
 
   const handleSubmit = async () => {
     if (!form.name || !form.email || !form.message) return;
@@ -88,14 +84,6 @@ export default function Contact() {
       boxSizing: "border-box",
     }}>
       <style>{`
-        @keyframes ctcFadeUp {
-          from { opacity: 0; transform: translateY(30px); }
-          to   { opacity: 1; transform: none; }
-        }
-        .ctc-visible .c1 { animation: ctcFadeUp .7s ease both .05s; }
-        .ctc-visible .c2 { animation: ctcFadeUp .7s ease both .2s;  }
-        .ctc-visible .c3 { animation: ctcFadeUp .7s ease both .35s; }
-
         .ctc-layout {
           display: grid;
           grid-template-columns: 1fr 340px;
@@ -105,68 +93,52 @@ export default function Contact() {
 
         .ctc-input {
           width: 100%;
-          background: rgba(100,160,255,0.03);
-          border: 1px solid rgba(120,170,255,0.12);
-          border-radius: 2px;
+          background: rgba(110,150,200,0.03);
+          border: 1px solid rgba(110,150,200,0.16);
           padding: 14px 16px;
           font-family: 'Share Tech Mono', monospace;
           font-size: 12px;
-          letter-spacing: .08em;
-          color: rgba(180,215,255,0.8);
+          letter-spacing: .06em;
+          color: rgba(190,220,255,0.8);
           outline: none;
           transition: border-color .2s, background .2s;
           box-sizing: border-box;
-          cursor: text;
         }
-        .ctc-input::placeholder { color: rgba(100,150,255,0.25); }
+        .ctc-input::placeholder { color: rgba(110,150,200,0.3); }
         .ctc-input:focus {
-          border-color: rgba(120,180,255,0.35);
-          background: rgba(100,160,255,0.06);
+          border-color: rgba(140,180,230,0.4);
+          background: rgba(110,150,200,0.06);
         }
-        textarea.ctc-input {
-          resize: vertical;
-          min-height: 140px;
-          font-family: 'Share Tech Mono', monospace;
-        }
+        textarea.ctc-input { resize: vertical; min-height: 140px; }
 
-        .ctc-form-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 16px;
-        }
+        .ctc-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 
         .ctc-submit {
-          border: 1px solid rgba(100,180,255,0.45);
+          border: 1px solid rgba(140,180,230,0.5);
           padding: 14px 40px;
-          color: rgba(140,200,255,0.9);
+          color: rgba(160,200,255,0.9);
           font-family: 'Share Tech Mono', monospace;
-          font-size: 12px; letter-spacing: .16em;
+          font-size: 12px; letter-spacing: .14em;
           text-transform: uppercase; background: transparent;
-          cursor: pointer; transition: all .2s;
-          border-radius: 2px;
+          cursor: pointer;
+          transition: background .12s steps(2), color .12s steps(2);
         }
-        .ctc-submit:hover:not(:disabled) {
-          background: rgba(100,180,255,0.1);
-          box-shadow: 0 0 18px rgba(100,180,255,0.2);
-          color: #fff;
-        }
+        .ctc-submit:hover:not(:disabled) { background: rgba(160,200,255,0.9); color: #05080f; }
         .ctc-submit:disabled { opacity: .5; }
 
         .social-link {
           font-family: 'Share Tech Mono', monospace;
           font-size: 11px;
-          letter-spacing: .16em;
+          letter-spacing: .14em;
           text-transform: uppercase;
-          color: rgba(100,160,255,0.4);
+          color: rgba(110,150,200,0.45);
           text-decoration: none;
-          cursor: pointer;
-          transition: color .2s, gap .2s;
+          transition: color .15s;
           display: flex;
           align-items: center;
           gap: 10px;
         }
-        .social-link:hover { color: rgba(180,215,255,0.8); }
-        .social-link:hover .social-arrow { transform: translate(2px, -2px); }
+        .social-link:hover { color: rgba(190,220,255,0.85); }
 
         .social-icon {
           display: flex;
@@ -174,95 +146,68 @@ export default function Contact() {
           justify-content: center;
           width: 28px;
           height: 28px;
-          border: 1px solid rgba(100,160,255,0.15);
-          border-radius: 2px;
+          border: 1px solid rgba(110,150,200,0.18);
           flex-shrink: 0;
-          transition: border-color .2s, background .2s;
-        }
-        .social-link:hover .social-icon {
-          border-color: rgba(120,180,255,0.35);
-          background: rgba(100,160,255,0.08);
         }
 
         .social-arrow {
           font-size: 12px;
           margin-left: auto;
-          transition: transform .2s;
-          color: rgba(100,160,255,0.3);
-        }
-        .social-link:hover .social-arrow {
-          color: rgba(180,215,255,0.6);
+          color: rgba(110,150,200,0.35);
         }
 
         @media (max-width: 768px) {
-          .ctc-layout {
-            grid-template-columns: 1fr;
-            gap: 48px;
-          }
-          .ctc-form-grid {
-            grid-template-columns: 1fr;
-          }
-          .ctc-submit {
-            width: 100%;
-            text-align: center;
-          }
+          .ctc-layout { grid-template-columns: 1fr; gap: 48px; }
+          .ctc-form-grid { grid-template-columns: 1fr; }
+          .ctc-submit { width: 100%; text-align: center; }
         }
       `}</style>
 
-      <div style={{
-        position: "absolute", top: "10%", right: "5%",
-        width: 600, height: 600,
-        background: "radial-gradient(ellipse, rgba(60,100,255,0.05) 0%, transparent 70%)",
-        filter: "blur(60px)", pointerEvents: "none",
-      }} />
+      <div style={{ position: "relative", zIndex: 1 }}>
 
-      <div className={visible ? "ctc-visible" : ""} style={{ position: "relative", zIndex: 1 }}>
-
-        <div className="c1" style={{ marginBottom: 64 }}>
+        <div style={{ marginBottom: 64 }}>
           <p style={{
             fontFamily: "'Share Tech Mono', monospace",
             fontSize: 11, letterSpacing: ".2em",
-            color: "rgba(100,160,255,0.4)",
+            color: "rgba(110,150,200,0.45)",
             textTransform: "uppercase", margin: "0 0 12px",
           }}>
-            &gt; GET_IN_TOUCH
+            &gt; get_in_touch
           </p>
           <h2 style={{
             fontFamily: "'VT323', monospace",
             fontSize: "clamp(2.5rem, 6vw, 5rem)",
-            color: "rgba(180,215,255,0.9)",
+            color: "rgba(200,220,255,0.92)",
             margin: "0 0 16px", lineHeight: 1,
-            textShadow: "0 0 30px rgba(100,160,255,0.2)",
           }}>
             Let's Work Together_
           </h2>
           <p style={{
             fontFamily: "'Share Tech Mono', monospace",
-            fontSize: 13, color: "rgba(120,170,255,0.4)",
+            fontSize: 13, color: "rgba(120,160,205,0.45)",
             maxWidth: 480, lineHeight: 1.8, margin: 0,
           }}>
             Have a project in mind? Fill out the form and I'll get back to you within 24 hours.
           </p>
         </div>
 
-        <div className="c2 ctc-layout">
+        <div className="ctc-layout">
           {sent ? (
             <div style={{
-              border: "1px solid rgba(100,200,120,0.25)",
-              borderRadius: 2,
+              border: "1px solid rgba(100,200,120,0.3)",
               padding: "48px 40px",
               textAlign: "center",
             }}>
               <p style={{
                 fontFamily: "'VT323', monospace",
                 fontSize: "3rem",
-                color: "rgba(100,220,140,0.8)",
+                color: "rgba(100,220,140,0.85)",
                 margin: "0 0 12px",
               }}>Message Sent_</p>
               <p style={{
                 fontFamily: "'Share Tech Mono', monospace",
-                fontSize: 12, color: "rgba(100,200,120,0.5)",
-                letterSpacing: ".1em",
+                fontSize: 12, color: "rgba(100,200,120,0.55)",
+                letterSpacing: ".08em",
               }}>
                 I'll be in touch soon.
               </p>
@@ -277,8 +222,8 @@ export default function Contact() {
                 <div>
                   <label style={{
                     fontFamily: "'Share Tech Mono', monospace",
-                    fontSize: 10, letterSpacing: ".14em",
-                    color: "rgba(100,160,255,0.35)",
+                    fontSize: 10, letterSpacing: ".12em",
+                    color: "rgba(110,150,200,0.4)",
                     textTransform: "uppercase",
                     display: "block", marginBottom: 8,
                   }}>Name</label>
@@ -293,8 +238,8 @@ export default function Contact() {
                 <div>
                   <label style={{
                     fontFamily: "'Share Tech Mono', monospace",
-                    fontSize: 10, letterSpacing: ".14em",
-                    color: "rgba(100,160,255,0.35)",
+                    fontSize: 10, letterSpacing: ".12em",
+                    color: "rgba(110,150,200,0.4)",
                     textTransform: "uppercase",
                     display: "block", marginBottom: 8,
                   }}>Email</label>
@@ -312,8 +257,8 @@ export default function Contact() {
               <div>
                 <label style={{
                   fontFamily: "'Share Tech Mono', monospace",
-                  fontSize: 10, letterSpacing: ".14em",
-                  color: "rgba(100,160,255,0.35)",
+                  fontSize: 10, letterSpacing: ".12em",
+                  color: "rgba(110,150,200,0.4)",
                   textTransform: "uppercase",
                   display: "block", marginBottom: 8,
                 }}>Budget Range</label>
@@ -335,8 +280,8 @@ export default function Contact() {
               <div>
                 <label style={{
                   fontFamily: "'Share Tech Mono', monospace",
-                  fontSize: 10, letterSpacing: ".14em",
-                  color: "rgba(100,160,255,0.35)",
+                  fontSize: 10, letterSpacing: ".12em",
+                  color: "rgba(110,150,200,0.4)",
                   textTransform: "uppercase",
                   display: "block", marginBottom: 8,
                 }}>Message</label>
@@ -350,18 +295,14 @@ export default function Contact() {
               </div>
 
               <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                <button
-                  className="ctc-submit"
-                  type="submit"
-                  disabled={sending}
-                >
+                <button className="ctc-submit" type="submit" disabled={sending}>
                   {sending ? "Sending..." : "./send_message.sh"}
                 </button>
                 {error && (
                   <span style={{
                     fontFamily: "'Share Tech Mono', monospace",
-                    fontSize: 11, color: "rgba(255,90,90,0.7)",
-                    letterSpacing: ".1em",
+                    fontSize: 11, color: "rgba(255,90,90,0.75)",
+                    letterSpacing: ".08em",
                   }}>
                     ✗ Something went wrong
                   </span>
@@ -370,19 +311,17 @@ export default function Contact() {
             </form>
           )}
 
-          {/* Sidebar */}
           <div style={{ display: "flex", flexDirection: "column", gap: 40 }}>
             <div>
               <p style={{
                 fontFamily: "'Share Tech Mono', monospace",
-                fontSize: 10, letterSpacing: ".18em",
-                color: "rgba(100,160,255,0.3)",
+                fontSize: 10, letterSpacing: ".16em",
+                color: "rgba(110,150,200,0.35)",
                 textTransform: "uppercase", margin: "0 0 16px",
               }}>
-                &gt; DIRECT
+                &gt; direct
               </p>
-              
-                <a href="mailto:eldoaabel@gmail.com"
+              <a href="mailto:eldoaabel@gmail.com"
                 className="social-link"
                 style={{ fontSize: 12 }}
                 onClick={() => posthog.capture("social_link_clicked", { platform: "email" })}
@@ -396,11 +335,11 @@ export default function Contact() {
             <div>
               <p style={{
                 fontFamily: "'Share Tech Mono', monospace",
-                fontSize: 10, letterSpacing: ".18em",
-                color: "rgba(100,160,255,0.3)",
+                fontSize: 10, letterSpacing: ".16em",
+                color: "rgba(110,150,200,0.35)",
                 textTransform: "uppercase", margin: "0 0 16px",
               }}>
-                &gt; ELSEWHERE
+                &gt; elsewhere
               </p>
               <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                 {[
@@ -408,8 +347,7 @@ export default function Contact() {
                   { label: "LinkedIn",  href: "https://www.linkedin.com/in/aabel-eldo-0335b6384/",      Icon: IconLinkedIn  },
                   { label: "Instagram", href: "https://www.instagram.com/aabel.js",                  Icon: IconInstagram },
                 ].map(s => (
-                  
-                    <a key={s.label}
+                  <a key={s.label}
                     href={s.href}
                     target="_blank"
                     rel="noreferrer"
@@ -425,8 +363,7 @@ export default function Contact() {
             </div>
 
             <div style={{
-              border: "1px solid rgba(100,200,120,0.2)",
-              borderRadius: 2,
+              border: "1px solid rgba(100,200,120,0.25)",
               padding: "16px 20px",
               display: "flex",
               alignItems: "center",
@@ -434,14 +371,13 @@ export default function Contact() {
             }}>
               <div style={{
                 width: 8, height: 8, borderRadius: "50%",
-                background: "rgba(100,220,140,0.8)",
-                boxShadow: "0 0 8px rgba(100,220,140,0.6)",
+                background: "rgba(100,220,140,0.85)",
                 flexShrink: 0,
               }} />
               <span style={{
                 fontFamily: "'Share Tech Mono', monospace",
-                fontSize: 11, letterSpacing: ".1em",
-                color: "rgba(100,200,120,0.6)",
+                fontSize: 11, letterSpacing: ".08em",
+                color: "rgba(100,200,120,0.65)",
               }}>
                 Available for new projects
               </span>
@@ -450,9 +386,9 @@ export default function Contact() {
         </div>
       </div>
 
-      <div className="c3" style={{
+      <div style={{
         position: "relative", zIndex: 1,
-        borderTop: "1px solid rgba(120,170,255,0.08)",
+        borderTop: "1px solid rgba(110,150,200,0.1)",
         paddingTop: 32,
         marginTop: 80,
         display: "flex",
@@ -463,18 +399,11 @@ export default function Contact() {
       }}>
         <span style={{
           fontFamily: "'Share Tech Mono', monospace",
-          fontSize: 10, letterSpacing: ".14em",
-          color: "rgba(100,160,255,0.25)",
+          fontSize: 10, letterSpacing: ".12em",
+          color: "rgba(110,150,200,0.3)",
           textTransform: "uppercase",
         }}>
           © 2026 Abel Eldo
-        </span>
-        <span style={{
-          fontFamily: "'Share Tech Mono', monospace",
-          fontSize: 10, letterSpacing: ".14em",
-          color: "rgba(100,160,255,0.25)",
-          textTransform: "uppercase",
-        }}>
         </span>
       </div>
     </section>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import posthog from "posthog-js";
 
 const PROJECTS = [
@@ -58,28 +58,11 @@ const PROJECTS = [
 ];
 
 export default function Work() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const [visible, setVisible] = useState(false);
   const [hovered, setHovered] = useState<number | null>(null);
-
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) {
-          setVisible(true);
-          posthog.capture("work_section_viewed");
-        }
-      },
-      { threshold: 0.1 }
-    );
-    if (sectionRef.current) obs.observe(sectionRef.current);
-    return () => obs.disconnect();
-  }, []);
 
   return (
     <section
       id="work"
-      ref={sectionRef}
       style={{
         background: "#05080f",
         padding: "120px 8vw",
@@ -90,35 +73,26 @@ export default function Work() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&display=swap');
 
-        @keyframes workFadeUp {
-          from { opacity: 0; transform: translateY(30px); }
-          to   { opacity: 1; transform: none; }
-        }
-
-        .work-visible .work-header { animation: workFadeUp .7s ease both; }
-        .work-visible .work-row    { animation: workFadeUp .7s ease both; }
-
         .work-row {
           display: grid;
           grid-template-columns: 60px 1fr;
           align-items: start;
           gap: 24px;
           padding: 48px 0;
-          border-bottom: 1px solid rgba(120,170,255,0.08);
+          border-bottom: 1px solid rgba(110,150,200,0.1);
           position: relative;
         }
         .work-row::before {
           content: '';
           position: absolute;
           left: -8vw; right: -8vw; top: 0; bottom: 0;
-          background: rgba(100,160,255,0.03);
+          background: rgba(110,150,200,0.03);
           opacity: 0;
-          transition: opacity .25s;
+          transition: opacity .2s;
           pointer-events: none;
         }
         .work-row:hover::before { opacity: 1; }
 
-        /* Desktop: two-col layout inside each row */
         .work-content-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
@@ -135,23 +109,17 @@ export default function Work() {
         .work-tag {
           font-family: 'Share Tech Mono', monospace;
           font-size: 10px;
-          letter-spacing: .12em;
+          letter-spacing: .1em;
           text-transform: uppercase;
-          color: rgba(100,160,255,0.5);
-          border: 1px solid rgba(100,160,255,0.2);
+          color: rgba(120,160,205,0.55);
+          border: 1px solid rgba(110,150,200,0.22);
           padding: 3px 10px;
-          border-radius: 999px;
-          transition: color .2s, border-color .2s;
-        }
-        .work-row:hover .work-tag {
-          color: rgba(140,190,255,0.8);
-          border-color: rgba(140,190,255,0.35);
         }
 
         .work-bullet {
           font-family: 'Share Tech Mono', monospace;
           font-size: 11px;
-          color: rgba(120,170,255,0.45);
+          color: rgba(130,170,210,0.5);
           line-height: 1.8;
           padding-left: 16px;
           position: relative;
@@ -161,58 +129,35 @@ export default function Work() {
           content: '—';
           position: absolute;
           left: 0;
-          color: rgba(100,160,255,0.25);
+          color: rgba(110,150,200,0.3);
         }
 
         .live-badge {
           font-family: 'Share Tech Mono', monospace;
           font-size: 9px;
-          letter-spacing: .15em;
+          letter-spacing: .12em;
           text-transform: uppercase;
-          color: rgba(80,220,160,0.7);
-          border: 1px solid rgba(80,220,160,0.25);
+          color: rgba(80,220,160,0.75);
+          border: 1px solid rgba(80,220,160,0.3);
           padding: 2px 8px;
-          border-radius: 999px;
           margin-left: 12px;
           vertical-align: middle;
           position: relative;
           top: -2px;
         }
-        .live-badge::before {
-          content: '●';
-          margin-right: 5px;
-          font-size: 7px;
-          vertical-align: middle;
-        }
+        .live-badge::before { content: '●'; margin-right: 5px; font-size: 7px; }
 
         .work-screenshot {
           width: 100%;
-          border-radius: 4px;
-          border: 1px solid rgba(100,160,255,0.1);
-          opacity: 0.85;
-          transition: opacity .25s;
+          border: 1px solid rgba(110,150,200,0.12);
+          opacity: 0.88;
         }
-        .work-screenshot:hover { opacity: 1; }
 
-        /* ── Mobile ── */
         @media (max-width: 768px) {
-          .work-row {
-            grid-template-columns: 1fr;
-            gap: 12px;
-            padding: 36px 0;
-          }
-          .work-row-meta {
-            display: flex;
-            gap: 16px;
-            align-items: center;
-          }
-          .work-content-grid {
-            grid-template-columns: 1fr;
-            gap: 24px;
-          }
-          .work-screenshot {
-            order: -1;
-          }
+          .work-row { grid-template-columns: 1fr; gap: 12px; padding: 36px 0; }
+          .work-row-meta { display: flex; gap: 16px; align-items: center; }
+          .work-content-grid { grid-template-columns: 1fr; gap: 24px; }
+          .work-screenshot { order: -1; }
         }
       `}</style>
 
@@ -220,72 +165,66 @@ export default function Work() {
         style={{
           position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none",
           backgroundImage: `
-            linear-gradient(rgba(100,160,255,0.02) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(100,160,255,0.02) 1px, transparent 1px)
+            linear-gradient(rgba(110,150,200,0.02) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(110,150,200,0.02) 1px, transparent 1px)
           `,
           backgroundSize: "60px 60px",
         }}
       />
 
-      <div className={visible ? "work-visible" : ""} style={{ position: "relative", zIndex: 1 }}>
-        <div className="work-header" style={{ marginBottom: 16 }}>
+      <div style={{ position: "relative", zIndex: 1 }}>
+        <div style={{ marginBottom: 16 }}>
           <p style={{
             fontFamily: "'Share Tech Mono', monospace",
             fontSize: 11, letterSpacing: ".2em",
-            color: "rgba(100,160,255,0.4)",
+            color: "rgba(110,150,200,0.45)",
             textTransform: "uppercase", margin: "0 0 12px",
           }}>
-            &gt; SELECTED_WORK
+            &gt; selected_work
           </p>
           <h2 style={{
             fontFamily: "'VT323', monospace",
             fontSize: "clamp(2.5rem, 6vw, 5rem)",
-            color: "rgba(180,215,255,0.9)",
+            color: "rgba(200,220,255,0.92)",
             margin: 0, lineHeight: 1,
-            textShadow: "0 0 30px rgba(100,160,255,0.2)",
           }}>
             Projects_
           </h2>
         </div>
 
-        <div style={{ height: 1, background: "rgba(120,170,255,0.12)", margin: "40px 0 0" }} />
+        <div style={{ height: 1, background: "rgba(110,150,200,0.14)", margin: "40px 0 0" }} />
 
         {PROJECTS.map((p, i) => (
           <div
             key={p.number}
             className="work-row"
-            style={{ animationDelay: `${0.1 + i * 0.08}s` }}
             onMouseEnter={() => setHovered(i)}
             onMouseLeave={() => setHovered(null)}
           >
-            {/* Number + year */}
             <div className="work-row-meta">
               <span style={{
                 fontFamily: "'Share Tech Mono', monospace",
                 fontSize: 11, letterSpacing: ".1em",
-                color: "rgba(100,160,255,0.3)",
+                color: "rgba(110,150,200,0.35)",
               }}>
                 {p.number}
               </span>
               <span style={{
                 fontFamily: "'Share Tech Mono', monospace",
-                fontSize: 11, color: "rgba(100,160,255,0.2)",
+                fontSize: 11, color: "rgba(110,150,200,0.25)",
               }}>
                 {p.year}
               </span>
             </div>
 
-            {/* Content */}
             <div className="work-content-grid">
-              {/* Left: info */}
               <div>
                 <h3 style={{
                   fontFamily: "'VT323', monospace",
                   fontSize: "clamp(1.6rem, 3vw, 2.4rem)",
-                  color: hovered === i ? "rgba(210,230,255,0.95)" : "rgba(180,215,255,0.75)",
+                  color: hovered === i ? "rgba(220,235,255,0.95)" : "rgba(190,215,250,0.78)",
                   margin: 0, lineHeight: 1,
-                  transition: "color .25s",
-                  textShadow: hovered === i ? "0 0 20px rgba(100,160,255,0.3)" : "none",
+                  transition: "color .2s",
                 }}>
                   {p.title}
                   {p.live && <span className="live-badge">Live</span>}
@@ -297,7 +236,7 @@ export default function Work() {
 
                 <p style={{
                   fontFamily: "'Share Tech Mono', monospace",
-                  fontSize: 12, color: "rgba(120,170,255,0.5)",
+                  fontSize: 12, color: "rgba(130,170,210,0.55)",
                   margin: "16px 0 0", lineHeight: 1.7,
                 }}>
                   {p.description}
@@ -309,19 +248,18 @@ export default function Work() {
                   ))}
                 </div>
 
-                
-                  <a href={p.link}
+                <a href={p.link}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => posthog.capture("project_site_visited", { project: p.title, url: p.link })}
                   style={{
                     display: "inline-block", marginTop: 20,
                     fontFamily: "'Share Tech Mono', monospace",
-                    fontSize: 10, letterSpacing: ".15em",
+                    fontSize: 10, letterSpacing: ".14em",
                     textTransform: "uppercase",
-                    color: "rgba(100,160,255,0.6)",
+                    color: "rgba(120,160,205,0.65)",
                     textDecoration: "none",
-                    borderBottom: "1px solid rgba(100,160,255,0.25)",
+                    borderBottom: "1px solid rgba(110,150,200,0.3)",
                     paddingBottom: 2,
                   }}
                 >
@@ -329,7 +267,6 @@ export default function Work() {
                 </a>
               </div>
 
-              {/* Right: screenshot */}
               <img
                 src={p.image}
                 alt={`${p.title} screenshot`}
