@@ -264,7 +264,7 @@ export default function Engineering() {
           <div className="h2">VEX Worlds</div>
           <div className="text" style={{ marginBottom: 24 }}>
             Part of a school robotics program whose team qualified for and attended the
-            VEX World Championship — the largest robotics competition in the world.
+            VEX World Championship, the largest robotics competition in the world.
             Attended Worlds alongside the team, taking in the scale of international
             competition firsthand.
           </div>

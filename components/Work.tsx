@@ -11,10 +11,10 @@ const PROJECTS = [
     year: "2026",
     image: "/screenshots/purple-hope.png",
     description:
-      "Fundraising site for a Canadian Cancer Society pancreatic cancer campaign. Built and shipped by a 5-person high school team — live at purplehope.ca with a CI/CD pipeline, Cloudflare DNS, and real contact form submissions.",
+      "Fundraising site for a Canadian Cancer Society pancreatic cancer campaign. Built and shipped by a 5-person high school team, live at purplehope.ca with a CI/CD pipeline, Cloudflare DNS, and real contact form submissions.",
     bullets: [
       "Video background hero with automatic playlist cycling",
-      "Scroll-triggered entrance animations — no animation libraries",
+      "Scroll-triggered entrance animations - no animation libraries",
       "CI/CD: every git push auto-deploys via Vercel",
       "Custom domain + Open Graph metadata for social previews",
     ],
@@ -28,7 +28,7 @@ const PROJECTS = [
     year: "2026",
     image: "/screenshots/ambrose-pizza.png",
     description:
-      "Freelance site for a local Ontario pizza place — self-sourced through cold outreach, scoped and priced independently at $500, and presented live in the restaurant. Managed a real technical conversation about POS integration on the spot.",
+      "Freelance site for a local Ontario pizza place, self-sourced through cold outreach, scoped and priced independently at $500, and presented live in the restaurant. Managed a real technical conversation about POS integration on the spot.",
     bullets: [
       "Sliding pill navbar with active section tracking via scroll",
       "Tabbed menu system across 10 categories with full item/price data",
@@ -46,9 +46,9 @@ const PROJECTS = [
     year: "2026",
     image: "/screenshots/782-taphouse.png",
     description:
-      "Freelance site for a Port Stanley bar — self-sourced through cold outreach after scraping Google Maps for businesses without a web presence. Built the full site, then used it to open the sales conversation. Pitched at $275.",
+      "Freelance site for a Port Stanley bar, self-sourced through cold outreach after scraping Google Maps for businesses without a web presence. Built the full site, then used it to open the sales conversation. Pitched at $275.",
     bullets: [
-      "Built before any client contact — the site was the pitch",
+      "Built before any client contact - the site was the pitch",
       "Warm dark aesthetic tailored to the bar's brand",
       "Fully responsive with menu, atmosphere, and contact sections",
     ],
